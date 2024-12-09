@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Vendor } from '../types';
 
-interface LoginRequest {
-  customerEmail: string;
-  customerPassword: string;
-}
-
-const CustomerLogin: React.FC = () => {
-  const [formData, setFormData] = useState<LoginRequest>({ customerEmail: '', customerPassword: '' });
+const VendorLogin = () => {
+  const [formData, setFormData] = useState({ vendorEmail: '', vendorPassword: '' });
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -27,18 +23,13 @@ const CustomerLogin: React.FC = () => {
 
     try {
       // Send login request to the backend
-      const response = await axios.post('http://localhost:8080/customer/login', formData);
+      const response = await axios.post<Vendor>('http://localhost:8080/vendor/login', formData);
 
-      // If login is successful, navigate to the CustomerBuy page
+      // If login is successful, navigate to the Vendor Dashboard with vendor data
       if (response.status === 200) {
         console.log('Login successful', response.data);
-
-        // Save the customer data in localStorage (or sessionStorage)
-        const customerData = response.data; // Assuming response.data contains the customer info
-        localStorage.setItem('customer', JSON.stringify(customerData)); // Store customer data
-
-        // Navigate to customer dashboard
-        navigate('/customer/dashboard');
+        const vendor = response.data;
+        navigate('/vendor/dashboard', { state: { vendor } }); // Passing vendor object
       }
     } catch (err: any) {
       // Handle login failure (invalid email/password)
@@ -52,24 +43,24 @@ const CustomerLogin: React.FC = () => {
 
   // Handle redirection to the signup page
   const handleSignup = () => {
-    navigate('/signup');
+    navigate('/vendor/signup');
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Customer Login</h2>
-
+        <h2 className="text-2xl font-bold text-center mb-6">Vendor Login</h2>
+        
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="customerEmail" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="vendorEmail" className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
-              id="customerEmail"
-              name="customerEmail"
-              value={formData.customerEmail}
+              id="vendorEmail"
+              name="vendorEmail"
+              value={formData.vendorEmail}
               onChange={handleChange}
               required
               className="mt-1 px-3 py-2 border border-gray-300 rounded-lg w-full"
@@ -77,14 +68,14 @@ const CustomerLogin: React.FC = () => {
           </div>
 
           <div className="mb-6">
-            <label htmlFor="customerPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="vendorPassword" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
               type="password"
-              id="customerPassword"
-              name="customerPassword"
-              value={formData.customerPassword}
+              id="vendorPassword"
+              name="vendorPassword"
+              value={formData.vendorPassword}
               onChange={handleChange}
               required
               className="mt-1 px-3 py-2 border border-gray-300 rounded-lg w-full"
@@ -114,4 +105,4 @@ const CustomerLogin: React.FC = () => {
   );
 };
 
-export default CustomerLogin;
+export default VendorLogin;

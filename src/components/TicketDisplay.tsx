@@ -1,46 +1,64 @@
-function TicketDisplay() {
-    return (
-      <div className="ticket-display-container bg-white shadow-md rounded-md p-4">
-        <h2 className="text-xl font-bold mb-4">Ticket Display</h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-300">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="p-2 border border-gray-300">Ticket ID</th>
-                <th className="p-2 border border-gray-300">Event ID</th>
-                <th className="p-2 border border-gray-300">Vendor ID</th>
-                <th className="p-2 border border-gray-300">Customer ID</th>
-                <th className="p-2 border border-gray-300">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Example Rows */}
-              <tr className="hover:bg-gray-100">
-                <td className="p-2 border border-gray-300 text-center">1</td>
-                <td className="p-2 border border-gray-300 text-center">101</td>
-                <td className="p-2 border border-gray-300 text-center">501</td>
-                <td className="p-2 border border-gray-300 text-center">201</td>
-                <td className="p-2 border border-gray-300 text-green-500 font-semibold text-center">
-                  Sold
-                </td>
-              </tr>
-              <tr className="hover:bg-gray-100">
-                <td className="p-2 border border-gray-300 text-center">2</td>
-                <td className="p-2 border border-gray-300 text-center">102</td>
-                <td className="p-2 border border-gray-300 text-center">502</td>
-                <td className="p-2 border border-gray-300 text-center text-gray-500 italic">
-                  N/A
-                </td>
-                <td className="p-2 border border-gray-300 text-gray-500 font-semibold text-center">
-                  Unsold
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-  
- export default TicketDisplay;
-  
+import React, { useEffect, useState } from 'react';
+
+const TicketDisplay: React.FC = () => {
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [connected, setConnected] = useState(false);
+  const [wsClient, setWsClient] = useState<WebSocket | null>(null);
+
+  useEffect(() => {
+    // Use the native WebSocket API with the appropriate protocol
+    const wsUrl = 'ws://localhost:8080/ws';  // Change this to wss:// in production if using HTTPS
+
+    // Establish the WebSocket connection
+    const socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      console.log('WebSocket Connected');
+      setConnected(true);
+    };
+
+    socket.onmessage = (event) => {
+      console.log('Message from server: ', event.data);
+      const ticketData = JSON.parse(event.data); // Assuming the data is JSON
+      setTickets((prevTickets) => [...prevTickets, ticketData]);
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket Error: ', error);
+      setConnected(false);
+    };
+
+    socket.onclose = () => {
+      console.log('WebSocket Disconnected');
+      setConnected(false);
+    };
+
+    // Set the WebSocket client for later disconnection
+    setWsClient(socket);
+
+    // Cleanup on component unmount
+    return () => {
+      if (socket) {
+        socket.close(); // Properly close the WebSocket connection when the component unmounts
+      }
+    };
+  }, []); // Empty dependency array ensures this effect runs once
+
+  return (
+    <div>
+      <h2>Tickets</h2>
+      {connected ? (
+        <p>Connected to WebSocket</p>
+      ) : (
+        <p>Connecting to WebSocket...</p>
+      )}
+      <ul>
+        {tickets.map((ticket, index) => (
+          <li key={index}>{ticket.name} - {ticket.status}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TicketDisplay;
