@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Vendor } from '../types';  // Assuming you have a Vendor type
+import { Vendor } from '../types';  
 
 const VendorSignup = () => {
   const navigate = useNavigate();
@@ -16,11 +16,11 @@ const VendorSignup = () => {
     e.preventDefault();
     setError(null);
 
-    // Create a new vendor object with BigInt for the contact number
+
     const newVendor: Vendor = {
       vendorName: name,
       vendorEmail: email,
-      vendorContactNumber: parseInt(contactNumber,10), // Converting to BigInt
+      vendorContactNumber: parseInt(contactNumber,10),
       vendorPassword: password,
     };
 

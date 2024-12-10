@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import ConfigurationForm from './ConfigurationForm';
 import ControlPanel from './ControlPanel';
-import LogDisplay from './LogDisplay';
-import TicketDisplay from './TicketDisplay';
 import axios from 'axios';
 import "./init.tsx"
 
