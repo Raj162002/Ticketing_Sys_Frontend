@@ -5,6 +5,7 @@ import CustomerLogin from './components/CustomerLogin';
 import CustomerSignup from "./components/CustomerSignup";
 import VendorLogin from "./components/VendorLogin";
 import VendorSignup from "./components/VendorSignup";
+import WelcomePage from './components/WelcomePage';
 import "./components/init"
 import VendorDashboard from "./components/VendorDashboard";
 import CustomerDashboard from "./components/CustomerDashboard";
@@ -18,11 +19,9 @@ const App = (): JSX.Element => {
 </script>
    <BrowserRouter>
     <Routes>
-      <Route path="/" element={<AdminPanel/>}/>
-        {/* Login route */}
+        <Route path="/" element={<WelcomePage/>}/>
+        <Route path="/adminPanel" element={<AdminPanel/>}/>
         <Route path="/customer/login" element={<CustomerLogin />} />
-
-        {/* Signup route */}
         <Route path="/customer/signup" element={<CustomerSignup />} />
         <Route path="/vendor/login" element ={<VendorLogin/>}/>
         <Route path="/vendor/signup" element ={<VendorSignup/>}/>
