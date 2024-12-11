@@ -31,7 +31,7 @@ const CustomerSignup = () => {
         console.log('Customer created successfully:', response.data);
 
         // Redirect to login page
-        navigate('/login');
+        navigate('/customer/login');
       } else {
         setError('Failed to create customer. Please try again.');
       }
@@ -49,6 +49,12 @@ const CustomerSignup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+      >
+        Logout
+      </button>
       <div className="max-w-md w-full p-6 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
         <form onSubmit={handleSubmit}>

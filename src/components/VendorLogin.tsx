@@ -48,8 +48,17 @@ const VendorLogin = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={() => navigate("/")}
+              className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition-colors duration-200 shadow-sm"
+            >
+              Logout
+            </button>
+          </div>
       <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">Vendor Login</h2>
+        
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

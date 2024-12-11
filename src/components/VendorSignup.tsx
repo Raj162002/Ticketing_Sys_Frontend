@@ -58,6 +58,14 @@ const VendorSignup = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full p-6 bg-white shadow-md rounded-lg">
+      <div className="absolute top-4 right-4">
+        <button
+          onClick={() => navigate("/")}
+          className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition-colors duration-200 shadow-sm"
+        >
+          Logout
+        </button>
+      </div>
         <h2 className="text-2xl font-bold mb-4 text-center">Vendor Sign Up</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

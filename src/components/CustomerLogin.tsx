@@ -52,11 +52,18 @@ const CustomerLogin: React.FC = () => {
 
   // Handle redirection to the signup page
   const handleSignup = () => {
-    navigate('/signup');
+    navigate('/customer/signup');
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+  <div className="min-h-screen bg-gray-100 relative">
+    <button
+      onClick={() => navigate("/")}
+      className="absolute top-4 right-4 bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition-colors duration-200 shadow-sm"
+    >
+      Logout
+    </button>
+    <div className="flex justify-center items-center min-h-screen">
       <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">Customer Login</h2>
 
@@ -111,6 +118,7 @@ const CustomerLogin: React.FC = () => {
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
